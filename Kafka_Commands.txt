@@ -1,0 +1,41 @@
+wget https://downloads.apache.org/kafka/3.9.0/kafka_2.13-3.9.0.tgz
+tar -xvf kafka_2.13-3.9.0.tgz
+
+---------------------------------
+sudo yum install java
+java --version
+
+openjdk 24 2025-03-18
+OpenJDK Runtime Environment Corretto-24.0.0.36.2 (build 24+36-FR)
+OpenJDK 64-Bit Server VM Corretto-24.0.0.36.2 (build 24+36-FR, mixed mode, sharing)
+----------------------------------
+
+Start Zoo-keeper:
+-------------------------------
+bin/zookeeper-server-start.sh config/zookeeper.properties
+
+Start Kafka
+-----------------------------------
+export KAFKA_HEAP_OPTS="-Xmx256M -Xms128M"  ----- for memory
+cd kafka_2.13-3.9.0
+bin/kafka-server-start.sh config/server.properties
+
+-----------------------------------
+
+Create the topic:
+-----------------------------
+Duplicate the session & enter in a new console --
+cd kafka_2.13-3.9.0
+bin/kafka-topics.sh --create --topic demo_testing2 --bootstrap-server 
+
+:9092 --replication-factor 1 --partitions 1
+
+Start Producer:
+--------------------------
+bin/kafka-console-producer.sh --topic demo_testing2 --bootstrap-server {Your public IP of Instance}:9092 
+
+Start Consumer:
+-------------------------
+Duplicate the session & enter in a new console --
+cd kafka_2.12-3.3.1
+bin/kafka-console-consumer.sh --topic demo_testing2 --bootstrap-server {Your Public IP of Instance}:9092
